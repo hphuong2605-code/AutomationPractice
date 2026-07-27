@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.Log;
 
 import java.time.Duration;
 import java.util.List;
@@ -12,16 +13,20 @@ import java.util.List;
 public class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
+
     public BasePage(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
+
     public void openUrl(String url) {
+        Log.logger.info("Open URL: " + url);
         driver.get(url);
     }
 
     public void click(By locator) {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
+        Log.logger.info("Click: " + locator);
     }
 
     public void type(By locator, String text) {
@@ -30,6 +35,13 @@ public class BasePage {
 
         element.clear();
         element.sendKeys(text);
+        String locatorText = locator.toString().toLowerCase();
+
+        if (locatorText.contains("password")) {
+            Log.logger.info("Type password: ******");
+        } else {
+            Log.logger.info("Type: " + text);
+        }
     }
 
     public String getText(By locator) {

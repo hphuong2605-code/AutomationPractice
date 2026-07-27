@@ -16,7 +16,13 @@ import java.time.Duration;
 public class DriverFactory {
     public static WebDriver createDriver() {
         //ChromeOptions options = new ChromeOptions();
-        String browser = ConfigReader.get("browser").toLowerCase();
+        String browser = Environment.browser();
+
+        if (browser == null || browser.isBlank()) {
+            throw new RuntimeException("Browser is missing.");
+        }
+
+        browser = browser.toLowerCase();
         WebDriver driver;
         System.out.println("Browser = " + browser);
         switch (browser) {
@@ -50,7 +56,7 @@ public class DriverFactory {
 
         driver.manage().window().maximize();
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Long.parseLong(ConfigReader.get("implicitWait"))));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Environment.timeout()));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(Long.parseLong(ConfigReader.get("pageLoadTimeout"))));
         driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(Long.parseLong(ConfigReader.get("scriptTimeout"))));
 
