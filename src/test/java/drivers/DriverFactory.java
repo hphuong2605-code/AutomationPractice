@@ -28,9 +28,17 @@ public class DriverFactory {
         switch (browser) {
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
-                if(Environment.headless()){
-                    chromeOptions.addArguments("--headless");
+
+                if (Environment.headless()) {
+                    chromeOptions.addArguments("--headless=new");
                 }
+
+                chromeOptions.addArguments("--disable-notifications");
+                chromeOptions.addArguments("--disable-popup-blocking");
+                chromeOptions.addArguments("--disable-dev-shm-usage");
+                chromeOptions.addArguments("--no-sandbox");
+                chromeOptions.addArguments("--disable-gpu");
+
                 driver = new ChromeDriver(chromeOptions);
                 break;
             case "firefox":

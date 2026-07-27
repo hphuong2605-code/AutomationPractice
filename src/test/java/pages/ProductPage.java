@@ -21,6 +21,13 @@ public class ProductPage extends BasePage {
     private final By btnContinueShopping = By.xpath("(//button[text()='Continue Shopping'])");
     private final By viewCart =
             By.xpath("//u[text()='View Cart']");
+    private final By textSearch = By.id("search_product");
+    private final By btnSearch = By.id("submit_search");
+    private final By searchTitle = By.xpath("//h2[text()='Searched Products']");
+    private final By productNames =
+            By.cssSelector(".productinfo p");
+    private final By productsMenu =
+            By.xpath("//a[@href='/products']");
 
     public List<String> addFirstTwoProducts() {
         List<String> productNames = new ArrayList<>();
@@ -57,5 +64,27 @@ public class ProductPage extends BasePage {
     }
     public void viewCart() {
         click(viewCart);
+    }
+    public void search(String keyword){
+        type(textSearch,keyword);
+        click(btnSearch);
+    }
+    public boolean isSearchDisplayed() {
+        return isDisplayed(searchTitle);
+    }
+
+    public boolean hasProduct(String productName) {
+        List<WebElement> products = finds(productNames);
+
+        for (WebElement product : products) {
+            if (product.getText().trim().equals(productName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public void goToProducts() {
+        click(productsMenu);
     }
 }
